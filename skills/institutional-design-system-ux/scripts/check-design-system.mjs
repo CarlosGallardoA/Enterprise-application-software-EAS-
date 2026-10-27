@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Validador estático del Sistema de Diseño e Internacionalización (Node.js >= 18, cero dependencias).
+// Validador estático del Sistema de Diseño e Internacionalización (Node.js soportado y parcheado, cero dependencias).
 // Verifica:
 //   1. [no-hex-color]         Cero colores hex literales fuera del archivo de tokens.
 //   2. [no-primitive-token]   Cero consumo directo de primitivos (--brand-*) fuera del archivo de tokens.

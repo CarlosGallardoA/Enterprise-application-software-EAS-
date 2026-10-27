@@ -21,6 +21,8 @@ Guía para construir interfaces de alta densidad de información —expedientes,
 
 ## Sinergia con `design-consistency-auditor`, `ui-ux-pro-max` e `impeccable`
 
+Antes de seleccionar o ejecutar frameworks, herramientas de compilación y pruebas o dependencias de UI, cumplir [la política de seguridad de tecnologías](../security-and-auditability/references/technology-security-policy.md): verificar soporte y avisos vigentes y bloquear vulnerabilidades conocidas aplicables de cualquier severidad o evidencia incompleta.
+
 Al trabajar en un entorno que incluye estas skills compañeras de diseño (ver [`audit-and-skill-orchestration`](../audit-and-skill-orchestration/SKILL.md)), respetar siempre esta jerarquía:
 
 1. **Autoridad suprema (`DESIGN.md` + `tokens.css`)**: ningún ejemplo externo puede introducir valores hexadecimales sueltos, clases utilitarias ajenas ni romper la escala de 6 pasos del proyecto (*The Brief Wins*).
@@ -67,7 +69,7 @@ Consulta la especificación completa y recetas de implementación en:
 
 ## Verificación automática del sistema de diseño y paridad i18n
 
-Integrar en el comando `lint` del proyecto los dos validadores incluidos (cero dependencias, Node >= 18):
+Integrar en el comando `lint` del proyecto los dos validadores incluidos (cero dependencias, Node.js soportado y parcheado según la política de tecnologías):
 
 ```bash
 # 1. Tokens semánticos, foco accesible y cero textos literales sueltos en HTML

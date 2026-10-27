@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Validador de gobierno documental para repositorios estilo SICRE (Node.js >= 18, cero dependencias).
+// Validador de gobierno documental para repositorios estilo SICRE (Node.js soportado y parcheado, cero dependencias).
 // Comprueba:
 //   1. Existencia y concisión de AGENTS.md en la raíz (evita que vuelva a inflarse como enciclopedia).
 //   2. Existencia de docs/AGENTS.md y de las subcarpetas requeridas.

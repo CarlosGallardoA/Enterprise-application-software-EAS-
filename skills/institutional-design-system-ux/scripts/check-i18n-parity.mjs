@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Validador de paridad de diccionarios i18n (Node.js >= 18, cero dependencias).
+// Validador de paridad de diccionarios i18n (Node.js soportado y parcheado, cero dependencias).
 // Soporta simultáneamente diccionarios raíz (<dir>/es.json, <dir>/en.json) y scopes anidados
 // (<dir>/<scope>/es.json, <dir>/<scope>/en.json).
 //

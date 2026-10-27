@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Generador de gobierno documental para aplicaciones nuevas (Node.js >= 18, cero dependencias).
+// Generador de gobierno documental para aplicaciones nuevas (Node.js soportado y parcheado, cero dependencias).
 // Crea AGENTS.md, DESIGN.md, .editorconfig, .gitignore y las 10 subcarpetas canónicas de docs/
 // con sus documentos base enlazados y la primera entrada numerada de docs/historial/changelog.md.
 //
@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const resourcesDir = path.resolve(__dirname, '../resources');
 const designTemplatePath = path.resolve(__dirname, '../../institutional-design-system-ux/resources/DESIGN.template.md');
+const technologySecurityPolicyPath = path.resolve(__dirname, '../../security-and-auditability/references/technology-security-policy.md');
 
 function parseArgs(argv) {
   const args = { target: process.cwd(), name: 'MiProyecto', force: false };
@@ -58,6 +59,7 @@ function main() {
   const args = parseArgs(process.argv);
   const targetRoot = path.resolve(args.target);
   const todayIso = new Date().toISOString().slice(0, 10);
+  const technologySecurityPolicy = fs.readFileSync(technologySecurityPolicyPath, 'utf8');
 
   for (const sub of CANONICAL_DOCS_DIRS) {
     fs.mkdirSync(path.join(targetRoot, 'docs', sub), { recursive: true });
@@ -82,6 +84,7 @@ function main() {
     'docs/reglas/reglas-generales.md',
     renderTemplate(fs.readFileSync(path.join(resourcesDir, 'reglas-generales.template.md'), 'utf8'), args.name, todayIso)
   );
+  emit('docs/reglas/seguridad-de-tecnologias.md', technologySecurityPolicy);
   emit(
     'docs/historial/changelog.md',
     renderTemplate(fs.readFileSync(path.join(resourcesDir, 'changelog.template.md'), 'utf8'), args.name, todayIso)

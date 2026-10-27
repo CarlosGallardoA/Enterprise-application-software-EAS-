@@ -11,7 +11,7 @@ Reglas vinculantes de proceso y gobierno para todo trabajo en el repositorio, in
 
 - Validar identidad, vigencia de sesión, permisos y alcance organizacional siempre en el servidor; nunca confiar en controles exclusivos del cliente ni en claims obsoletos de cookies/tokens para permisos revocables.
 - Mantener cadenas de conexión, claves criptográficas, contraseñas y tokens fuera del control de versiones. Nunca hardcodear credenciales reales ni siquiera en scripts temporales de prueba.
-- Al agregar o actualizar dependencias, ejecutar las herramientas oficiales de auditoría de vulnerabilidades directas y transitivas del ecosistema correspondiente.
+- Antes de seleccionar, instalar, actualizar o ejecutar tecnologías y de cerrar una entrega, cumplir [seguridad-de-tecnologias.md](./seguridad-de-tecnologias.md): usar versiones soportadas y parcheadas verificadas contra avisos oficiales vigentes; cubrir runtimes, dependencias directas/transitivas/de desarrollo, bibliotecas nativas, CI, SO e imágenes. Bloquear ante vulnerabilidades conocidas aplicables de cualquier severidad o evidencia incompleta, sin silenciar errores ni aceptar mitigaciones como corrección.
 
 ## Estilo de trabajo
 
@@ -36,6 +36,7 @@ Reglas vinculantes de proceso y gobierno para todo trabajo en el repositorio, in
 
 ## Verificación mínima antes de cerrar una tarea
 
+- Informe vigente `docs/auditorias/seguridad-tecnologias.md` con inventario real, soporte, fuentes oficiales, comandos/resultados y hashes/digests; cero vulnerabilidades conocidas aplicables pendientes y ninguna comprobación incompleta. En otro caso, reportar `BLOQUEADO`.
 - Compilación limpia con **0 advertencias y 0 errores**.
 - Suite de pruebas aplicables en verde.
 - Linters de código, fronteras arquitectónicas, sistema de diseño y formateadores ejecutados sin violaciones.

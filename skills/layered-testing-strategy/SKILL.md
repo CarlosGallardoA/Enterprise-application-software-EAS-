@@ -21,6 +21,8 @@ Asegura que cada regla de negocio, contrato de integración y flujo real de usua
 
 ## Ley Cero: Integridad Inquebrantable de las Pruebas (Prohibido Alterar Tests Solo para Pasar)
 
+Antes de ejecutar las suites o aprobar su entorno, cumplir [la política de seguridad de tecnologías](../security-and-auditability/references/technology-security-policy.md), incluidas dependencias de desarrollo, navegadores, bases de datos efímeras e imágenes de prueba. Bloquear versiones afectadas de cualquier severidad y verificaciones incompletas; una suite en verde no demuestra que el stack esté parcheado.
+
 > **REGLA FATAL — NUNCA MAQUILLAR UN TEST PARA FORZAR EL VERDE**:
 > Queda **terminantemente prohibido** modificar, debilitar, relajar, saltar (`skip`), borrar o acomodar las expectativas de una prueba simplemente para que pase cuando falla. Un test que falla puede estar señalando un **defecto real en el código de producción**; alterar el test para que coincida con la salida defectuosa oculta el bug y lo certifica falsamente hacia producción.
 

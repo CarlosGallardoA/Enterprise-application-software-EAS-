@@ -1,13 +1,6 @@
 ---
 name: security-and-auditability
-description: >-
-  Úsala al diseñar, implementar o endurecer autenticación, sesiones revocables,
-  autorización por permisos y alcance organizacional (anti-IDOR), recuperación de
-  contraseña, carga y cifrado en reposo de documentos (AES-256-GCM con AAD),
-  cabeceras de seguridad web (CSP, Trusted Types, CSRF, CORS) o logs estructurados
-  sin PII. Activators: seguridad, autenticación, autorización, permisos, IDOR,
-  sesiones revocables, cifrado documental, CSP, Trusted Types, antiforgery,
-  logs estructurados, bitácora, redacción de PII, hardening.
+description: "Seguridad: vulnerabilidades, CVE, Node.js, PHP, Brotli y demás tecnologías; soporte, parches y dependencias. Autenticación, sesiones revocables, anti-IDOR, contraseñas, AES-256-GCM/AAD, CSP, Trusted Types, CSRF/CORS y logs sin PII."
 ---
 
 # Seguridad Defensiva en Profundidad y Trazabilidad (`security-and-auditability`)
@@ -20,6 +13,14 @@ Integra controles de seguridad de nivel institucional desde el diseño de la arq
 - Al proteger endpoints, consultas y mutaciones con permisos y alcance organizacional.
 - Al manejar carga, validación, visualización o cifrado de archivos y plantillas documentales.
 - Al configurar cabeceras HTTP, políticas CORS/CSRF o registro de logs y errores del navegador.
+- Antes de elegir, instalar, actualizar o ejecutar cualquier tecnología, o aprobar una entrega con runtimes, dependencias, bibliotecas nativas o imágenes.
+
+## Regla obligatoria de versiones y vulnerabilidades
+
+- Cargar y cumplir [technology-security-policy.md](./references/technology-security-policy.md) antes de seleccionar versiones o declarar un cambio listo: usar ramas con soporte y parches vigentes verificados contra avisos oficiales durante la tarea.
+- Bloquear versiones con vulnerabilidades conocidas aplicables de **cualquier severidad**, tecnologías sin soporte y verificaciones incompletas. Actualizar, sustituir o retirar el componente; una mitigación no autoriza conservar una versión afectada.
+- Cubrir runtime, dependencias directas/transitivas/de desarrollo, bibliotecas nativas, CI, SO y artefacto final. Un `npm audit` o `composer audit` limpio no verifica todo el stack.
+- Entregar evidencia por versión, entorno, artefacto y fecha con estado `APROBADO` o `BLOQUEADO`; no prometer ausencia de vulnerabilidades desconocidas.
 
 ## Implementación Defensiva vs. Auditoría Adversarial (`security-audit`)
 
@@ -64,6 +65,7 @@ Integra controles de seguridad de nivel institucional desde el diseño de la arq
 
 ## Checklist de verificación de seguridad
 
+- [ ] La política de tecnologías está verificada en todo el alcance: inventario real, soporte vigente, avisos oficiales consultados y cero vulnerabilidades conocidas aplicables pendientes, de cualquier severidad; incertidumbre implica `BLOQUEADO`.
 - [ ] Cerrar sesión revoca el ticket en el servidor (una copia previa de la cookie deja de funcionar de inmediato).
 - [ ] Revocar un permiso o desactivar al usuario bloquea la siguiente petición sin esperar al vencimiento de la cookie.
 - [ ] El servidor falla explícitamente al arrancar fuera de Desarrollo si algún adaptador simulado sigue activo o falta la clave documental.

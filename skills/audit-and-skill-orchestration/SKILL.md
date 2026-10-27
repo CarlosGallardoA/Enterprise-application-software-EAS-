@@ -36,6 +36,10 @@ Define cómo las skills de arquitectura e implementación de `My_Project_Skills`
 
 Ver los flujos detallados de extremo a extremo en [companion-skills-matrix.md](./references/companion-skills-matrix.md).
 
+## Política transversal de versiones y vulnerabilidades
+
+Antes de seleccionar tecnologías, remediar avisos o aprobar cualquier entrega, aplicar [technology-security-policy.md](../security-and-auditability/references/technology-security-policy.md). Cubrir versiones realmente ejecutadas de runtimes, dependencias directas/transitivas/de desarrollo, bibliotecas nativas, herramientas de CI, SO e imágenes. Bloquear ante vulnerabilidades conocidas aplicables de cualquier severidad, falta de soporte o evidencia incompleta. La coordinación con una auditoría especializada no sustituye esta comprobación ni autoriza omitirla.
+
 ---
 
 ## 1. Protocolo obligatorio para Auditorías de Seguridad (`security-audit`)

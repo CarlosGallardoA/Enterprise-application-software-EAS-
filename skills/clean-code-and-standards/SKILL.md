@@ -21,6 +21,8 @@ Define las reglas de precisión, mantenibilidad y rendimiento predecible que dis
 
 ## Los 8 pilares de higiene de código
 
+Antes de ejecutar herramientas o cerrar el cambio, cumplir [la política de seguridad de tecnologías](../security-and-auditability/references/technology-security-policy.md): verificar soporte y avisos vigentes del stack completo; bloquear cualquier vulnerabilidad conocida aplicable o evidencia incompleta.
+
 ### 1. Cero advertencias y prohibición de supresiones evasivas
 - Configurar compiladores y analizadores estáticos con **tratamiento de advertencias como errores** (`0 warnings, 0 errors`).
 - Prohibido usar directivas para silenciar advertencias reales de tipos o nulabilidad (`@ts-ignore`, `#pragma warning disable`, `type: ignore`, `#[allow(...)]` sin justificación arquitectónica). Resolver siempre la causa raíz.

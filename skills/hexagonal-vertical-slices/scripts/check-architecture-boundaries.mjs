@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Validador universal y agnóstico de fronteras arquitectónicas (Hexagonal + Vertical Slices).
- * Sin dependencias externas (Node.js >= 18). Soporta JS/TS, Python, Go, C#, Java/Kotlin y Rust.
+ * Sin dependencias externas (Node.js soportado y parcheado). Soporta JS/TS, Python, Go, C#, Java/Kotlin y Rust.
  *
  * Uso:
  *   node check-architecture-boundaries.mjs --config ./boundaries.config.json [--root .]

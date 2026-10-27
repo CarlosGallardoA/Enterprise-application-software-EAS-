@@ -17,6 +17,7 @@
 | Qué buscas | Dónde vive |
 | --- | --- |
 | Reglas de proceso/gobierno: contrato de errores, auth, secretos, estilo de trabajo, política de git, verificación | [`docs/reglas/reglas-generales.md`](./docs/reglas/reglas-generales.md) |
+| Selección de versiones, soporte, vulnerabilidades y compuerta obligatoria del stack completo | [`docs/reglas/seguridad-de-tecnologias.md`](./docs/reglas/seguridad-de-tecnologias.md) |
 | Estándares de implementación backend | [`docs/estandares/estandares-backend.md`](./docs/estandares/estandares-backend.md) |
 | Estándares de implementación frontend, i18n y UX/UI | [`docs/estandares/estandares-frontend.md`](./docs/estandares/estandares-frontend.md) |
 | Capas, dependencias y regla obligatoria antes de todo cambio | [`docs/arquitectura/principios-generales.md`](./docs/arquitectura/principios-generales.md) |
@@ -26,6 +27,7 @@
 
 ## Verificación
 
+- Antes de usar tecnologías o cerrar una entrega, cargar [`docs/reglas/seguridad-de-tecnologias.md`](./docs/reglas/seguridad-de-tecnologias.md): bloquear versiones con vulnerabilidades conocidas aplicables de cualquier severidad, sin soporte o sin evidencia vigente suficiente.
 - Backend: `<comando build>`, `<comando test>`, `<comando lint/format>`.
 - Frontend: `<comando build>`, `<comando test>`, `<comando lint>`, `<comando format:check>`.
 - Ejecutar formateadores, linters y validadores de arquitectura/sistema de diseño antes de reportar cualquier tarea como terminada.

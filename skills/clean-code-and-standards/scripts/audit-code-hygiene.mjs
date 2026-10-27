@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Auditor ligero de higiene de código (agnóstico de lenguaje, Node.js >= 18, cero dependencias).
+ * Auditor ligero de higiene de código (agnóstico de lenguaje, Node.js soportado y parcheado, cero dependencias).
  * Detecta:
  *   1. Narrativa histórica/conversacional en comentarios ("hallazgo de revisión", "a pedido del usuario", etc.).
  *   2. Supresiones evasivas de compilador/linter sin justificación en la misma línea.

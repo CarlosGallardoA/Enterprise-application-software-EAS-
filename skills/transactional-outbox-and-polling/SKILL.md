@@ -21,6 +21,8 @@ Resuelve la asincronía, los efectos secundarios críticos y la actualización e
 
 ## Las 3 preguntas distintas (nunca mezclar sus mecanismos)
 
+Antes de elegir o ejecutar runtimes, workers, clientes HTTP, generadores documentales u otras dependencias, cumplir [la política de seguridad de tecnologías](../security-and-auditability/references/technology-security-policy.md): verificar todo el stack y bloquear vulnerabilidades conocidas aplicables de cualquier severidad, falta de soporte o evidencia incompleta.
+
 | Pregunta | Mecanismo correcto | Garantía |
 | --- | --- | --- |
 | *«Ya ocurrió algo: quien mira esta cola activa quiere notarlo sin recargar»* | **Sondeo disciplinado en cliente (`PollScheduler`)** + endpoint liviano. | Refuerzo de UX (se pausa en pestañas ocultas). |

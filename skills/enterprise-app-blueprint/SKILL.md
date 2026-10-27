@@ -32,12 +32,13 @@ Establece los cimientos estructurales, documentales y de contratos que sostienen
 7. **Reloj inyectado**: queda prohibido leer la hora del sistema de forma estática o directa en dominio, casos de uso o mapeadores. Siempre se inyecta un proveedor de tiempo abstracto.
 8. **Integridad inquebrantable de las pruebas (prohibido alterar tests solo para pasar)**: ninguna prueba existente o recién escrita se debilita, modifica para acomodarse al error ni salta (`skip`) para poner el pipeline en verde. Si una prueba falla, se investiga y corrige el defecto real en el código de producción (ver [`layered-testing-strategy`](../layered-testing-strategy/SKILL.md)).
 9. **Orquestación limpia con skills de auditoría y diseño**: las auditorías de seguridad delegan obligatoriamente en `security-audit` oficial de Cloudflare (modo solo lectura + evidencia `confirmed`/`needs_validation`), y el trabajo UI/UX combina `DESIGN.md` con `design-consistency-auditor`, `ui-ux-pro-max` e `impeccable` (ver [`audit-and-skill-orchestration`](../audit-and-skill-orchestration/SKILL.md)).
+10. **Tecnologías soportadas sin vulnerabilidades conocidas aplicables**: antes de elegir o ejecutar el stack, cumplir [technology-security-policy.md](../security-and-auditability/references/technology-security-policy.md). Verificar avisos oficiales vigentes de runtimes, dependencias y bibliotecas nativas; bloquear ante cualquier severidad, falta de soporte o evidencia incompleta. Extenderlo a CI, SO e imágenes.
 
 ## Flujo paso a paso para inicializar o alinear un proyecto
 
 ### Paso 1: Estructurar el gobierno documental
 
-1. Generar automáticamente toda la jerarquía inicial ejecutando el script incluido (cero dependencias, Node >= 18):
+1. Generar automáticamente toda la jerarquía inicial ejecutando el script incluido (cero dependencias, Node.js soportado y parcheado según la política de tecnologías):
    ```bash
    node <ruta-skill>/scripts/scaffold-project-docs.mjs --target . --name "NombreProyecto"
    ```
@@ -45,6 +46,7 @@ Establece los cimientos estructurales, documentales y de contratos que sostienen
    - `./AGENTS.md` (desde [AGENTS.template.md](./resources/AGENTS.template.md)) y `./DESIGN.md`.
    - `./docs/AGENTS.md` (desde [docs-AGENTS.template.md](./resources/docs-AGENTS.template.md)) y las **10 subcarpetas canónicas**: `arquitectura/`, `requisitos/`, `guias/`, `operacion/`, `decisiones/`, `auditorias/`, `planes/`, `reglas/` ([reglas-generales.template.md](./resources/reglas-generales.template.md)), `estandares/` y `historial/` ([changelog.template.md](./resources/changelog.template.md) con su primera entrada `### AAAA-MM-DD (1)`).
    - [.editorconfig.template](./resources/.editorconfig.template) y [.gitignore.template](./resources/.gitignore.template) (UTF-8 sin BOM y exclusión de secretos y carpetas de evidencia local `docs/auditorias/evidencias/`, `test-results/`).
+   - `./docs/reglas/seguridad-de-tecnologias.md`, copia de la política completa enlazada desde las reglas generales y `AGENTS.md`.
 3. Integrar en el comando de verificación del proyecto el validador de gobierno documental:
    ```bash
    node <ruta-skill>/scripts/check-docs-governance.mjs --root .
@@ -74,10 +76,11 @@ Antes de escribir funcionalidades de negocio, dejar operativos y en verde:
 
 - Compilación con **tratamiento de advertencias como errores** (`0 warnings, 0 errors`).
 - Formateador y linter de código, fronteras arquitectónicas (`hexagonal-vertical-slices`) y sistema de diseño (`institutional-design-system-ux`).
-- Comandos de auditoría oficial de dependencias y detección de secretos (`production-release-and-migrations`).
+- Compuerta obligatoria de seguridad del stack completo, de cualquier severidad y con bloqueo ante evidencia incompleta, más detección de secretos (`production-release-and-migrations`).
 
 ## Verificación antes de cerrar
 
+- [ ] El stack y las herramientas usan versiones soportadas y parcheadas verificadas durante la tarea; `docs/reglas/seguridad-de-tecnologias.md` está enlazado y la compuerta de seguridad bloquea vulnerabilidades conocidas aplicables y comprobaciones incompletas.
 - [ ] `AGENTS.md` enlaza sin enlaces rotos a `docs/reglas/reglas-generales.md`, `docs/arquitectura/principios-generales.md`, `DESIGN.md` y `docs/historial/changelog.md`.
 - [ ] No existen archivos `.md` sueltos en la raíz de `docs/` fuera de `docs/AGENTS.md`.
 - [ ] El contrato de errores devuelve códigos estables `reason` en fallas de negocio y `traceId` sin detalles internos ante errores `500`.

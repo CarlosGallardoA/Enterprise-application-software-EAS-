@@ -1,5 +1,11 @@
 # Plantilla de Pipeline CI/CD, Artefactos y Checklist de Servidor
 
+## Compuerta de versiones y vulnerabilidades antes de compilar o publicar
+
+Cumplir [technology-security-policy.md](../../security-and-auditability/references/technology-security-policy.md). Instalar en el proyecto una compuerta obligatoria que cubra runtimes y soporte, dependencias directas/transitivas/de desarrollo, bibliotecas nativas, herramientas de CI, SO e imagen/binario final. Auditar todas las severidades y bloquear también cuando falle una consulta, falte cobertura o quede un aviso pendiente. Verificar que un hallazgo y un fallo de consulta impiden publicar; prohibido `continue-on-error`, `|| true` o excepciones genéricas de CVE.
+
+Conservar el informe fechado en `docs/auditorias/seguridad-tecnologias.md`, con inventario real, avisos oficiales y hashes/digests. Revalidar tras actualizar componentes y antes de publicar; inspeccionar después los procesos realmente activos. `npm audit` y `composer audit` cubren sus paquetes, no sustituyen la revisión del runtime ni de sus bibliotecas integradas.
+
 ## 1. Los 3 Artefactos Inmutables del Build
 
 Un pipeline limpio nunca despliega desde carpetas sucias de compilación intermedia (`bin/` o árbol fuente crudo); publica tres paquetes verificados con destinos separados:
@@ -27,7 +33,8 @@ Antes de empaquetar el cliente web para QA/PreProd/Prod, correr un script rápid
 ## 3. Checklist Post-Despliegue (Backend + Frontend)
 
 ### Backend y Servidor Web
-- [ ] **HTTP/2 activo** sobre HTTPS/TLS 1.2+ (elimina el cuello de botella de 6 conexiones por origen de HTTP/1.1) y **compresión estática/dinámica habilitada** (`br`/`gzip`) verificando tamaño transferido real de los bundles JS/CSS.
+- [ ] Runtimes, bibliotecas nativas, servidor y SO efectivamente activos coinciden con las versiones/revisiones o digests verificados; no quedan procesos antiguos tras el reemplazo o reinicio.
+- [ ] **HTTP/2 activo** sobre HTTPS/TLS 1.2+ y **compresión estática/dinámica habilitada** (`br`/`gzip`) verificando tamaño transferido real de los bundles JS/CSS. Antes de habilitar descompresión de entradas o respuestas externas, verificar los parches del decodificador integrado (incluido Brotli); servir contenido comprimido no demuestra por sí solo exposición al fallo del decodificador.
 - [ ] Variables de entorno configuradas a nivel de host/servidor (sobreviven futuros deploys sin sobrescribirse) y validadas con *Fail-Fast* (`ValidateOnStart`) al iniciar el proceso.
 - [ ] Proceso configurado sin suspensión por inactividad (*AlwaysRunning* / *Idle Timeout = 0*) y con **1 único worker** si existen cachés o sesiones en memoria local.
 - [ ] Triple aislamiento verificado: carpetas externas persistentes (anillo de claves, documentos cifrados y logs) fuera de la carpeta de publicación, con llave `AES-256-GCM` única por ambiente almacenada y respaldada por separado del repositorio documental.

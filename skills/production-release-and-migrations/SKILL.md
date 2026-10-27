@@ -18,6 +18,11 @@ Garantiza que ningún cambio llegue a QA, PreProducción o Producción sin pasar
 - Al crear o modificar el pipeline de integración continua (CI) o entrega (CD).
 - Al diseñar cómo se aplican migraciones de esquema, semillas iniciales, bootstrap del primer administrador o scripts de soporte de emergencia.
 - Al preparar configuración por entorno, cabeceras de caché HTTP, variables de servidor o listas de verificación post-despliegue.
+- Al verificar versiones soportadas, parches de runtimes, dependencias, bibliotecas nativas, herramientas de CI e imágenes antes de publicar.
+
+## Compuerta obligatoria de seguridad de tecnologías
+
+Aplicar [technology-security-policy.md](../security-and-auditability/references/technology-security-policy.md) a desarrollo, CI y producción. Bloquear la publicación ante vulnerabilidades conocidas aplicables de cualquier severidad, ramas sin soporte o evidencia incompleta; comprobar tanto dependencias como runtimes, bibliotecas nativas, SO y artefactos finales. Las versiones de ejemplos históricos nunca sustituyen los avisos oficiales vigentes.
 
 ## Las 5 leyes operativas de despliegue
 
@@ -49,7 +54,7 @@ Consulta el detalle completo paso a paso en:
 
 1. Checkout limpio (`clean: true`) para no arrastrar residuos entre ejecuciones.
 2. Escaneo de secretos en el repositorio con salida redactada (cero exposición del secreto en logs si falla).
-3. Auditoría oficial de vulnerabilidades en dependencias directas y transitivas (backend y frontend).
+3. Compuerta obligatoria de seguridad de tecnologías: inventario real, soporte y avisos vigentes de runtimes, dependencias directas/transitivas/de desarrollo, bibliotecas nativas, herramientas de CI, SO e imágenes finales; fallar ante cualquier vulnerabilidad aplicable o verificación incompleta, sin excluir severidades ni silenciar errores.
 4. Validación previa de archivos de entorno del cliente (cortando con `exit 1` si falta configurar `apiUrl` u orígenes requeridos).
 5. Compilación en modo `Release` con **0 advertencias y 0 errores**.
 6. Ejecución de pruebas unitarias + pruebas de integración contra instancia de base de datos efímera privada del job, seguida de paso de limpieza con condición `always()`.
@@ -59,6 +64,7 @@ Consulta el detalle completo paso a paso en:
 
 ## Verificación antes de dar por cerrado un cambio operativo
 
+- [ ] El informe `docs/auditorias/seguridad-tecnologias.md` identifica versiones, fuentes, fecha y hashes/digests verificados; no quedan vulnerabilidades conocidas aplicables ni comprobaciones pendientes y los procesos desplegados usan los artefactos corregidos.
 - [ ] El migrador rechaza ejecutarse contra una base remota si falta el ticket de respaldo, el nombre exacto de la base o no coincide el `SHA-256` del script revisado.
 - [ ] `index.html` y archivos JSON de traducción sin hash se sirven con `Cache-Control: no-cache`, mientras los assets JS/CSS con hash usan `public, max-age=31536000, immutable`.
 - [ ] `/health/live` y `/health/ready` públicos no filtran detalles internos, y `/health/details` responde `401` sin sesión administrativa.

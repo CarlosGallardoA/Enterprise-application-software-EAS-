@@ -3,7 +3,7 @@
 [![Specification](https://img.shields.io/badge/spec-Agent%20Skills%20RFC-0A84FF?style=flat-square)](https://github.com/agent-skills/spec)
 [![Compatibility](https://img.shields.io/badge/agents-Antigravity%20|%20Claude%20Code%20|%20Codex%20|%20Cursor-6E40C9?style=flat-square)](#instalaci%C3%B3n-y-compatibilidad-multi-agente)
 [![Architecture](https://img.shields.io/badge/architecture-Hexagonal%20%2B%20Vertical%20Slices-10B981?style=flat-square)](#2-hexagonal-vertical-slices)
-[![Runtime](https://img.shields.io/badge/runtime-Node.js%20%3E%3D%2018%20(Zero--Deps%2C%206%20Guardrails)-F59E0B?style=flat-square)](#guardrails-ejecutables-y-herramientas-cicd)
+[![Runtime](https://img.shields.io/badge/runtime-Node.js%20soportado%20y%20parcheado-F59E0B?style=flat-square)](#guardrails-ejecutables-y-herramientas-cicd)
 [![Accessibility](https://img.shields.io/badge/standards-WCAG%202.1%20AA%20|%20OWASP-3B82F6?style=flat-square)](#6-institutional-design-system-ux)
 [![Testing Law](https://img.shields.io/badge/testing-Zero--Tampering%20Law-EF4444?style=flat-square)](#4-layered-testing-strategy)
 
@@ -41,7 +41,8 @@ La mayoría de los kits de instrucciones para IA se limitan a listas pasivas de 
 
 * **100 % Agnóstico e Independiente**: Los patrones arquitectónicos, las reglas de concurrencia, las políticas de seguridad y la higiene se aplican con igual rigor en una API en ASP.NET Core / C#, servicios en Go, microservicios en Python o aplicaciones web en Next.js / Vue / Angular.
 * **Ley Cero de Integridad de Pruebas (*Anti-Tampering Law*)**: Queda terminantemente prohibido modificar, relajar o silenciar (`skip`) una prueba que falla solo para conseguir un pipeline en verde. Todo fallo se asume como indicio de un defecto real en el código de producción.
-* **Guardrails Automatizados sin Dependencias**: Incluye **6 scripts en Node.js puro** (`.mjs`, Node >= 18) con cero dependencias en `npm`, listos para incorporarse como compuertas obligatorias de pre-commit y CI/CD.
+* **Guardrails Automatizados sin Dependencias**: Incluye **6 scripts en Node.js puro** (`.mjs`, runtime soportado y parcheado verificado) con cero dependencias en `npm`, listos para incorporarse como compuertas obligatorias de pre-commit y CI/CD.
+* **Tecnologías sin vulnerabilidades conocidas aplicables**: Las 9 skills exigen [la política de seguridad de tecnologías](skills/security-and-auditability/references/technology-security-policy.md): avisos oficiales vigentes, soporte y verificación de runtimes, dependencias directas/transitivas/de desarrollo, bibliotecas nativas, herramientas de CI, SO e imágenes. Cualquier severidad o comprobación incompleta bloquea la entrega. No se promete ausencia de vulnerabilidades desconocidas.
 * **Validación *Fail-Fast* en Arranque y Triple Aislamiento en Disco**: Toda configuración crítica se valida al inicio (`ValidateOnStart`); el servidor mantiene separación física estricta entre carpeta de publicación (reemplazable en deploy), directorio documental persistente (`RootPath`) y anillo de llaves criptográficas/maestra `AES-256-GCM` resguardado fuera del almacenamiento documental.
 * **Ergonomía de Teclado, Precarga Ociosa y Cero PII en Navegador**: Paleta de comandos global accesible (`Ctrl+K` / `Cmd+K`), precarga ociosa (`IdlePreloading`) sin saturación de red, carga dinámica (`import()`) de SDKs pesados de autenticación federada y prohibición absoluta de almacenar PII en `localStorage`.
 * **Optimización de Contexto (*Progressive Disclosure*)**: Los agentes solo cargan en memoria el nombre y activadores de la skill. El archivo `SKILL.md` se lee únicamente bajo demanda, y las referencias profundas (`references/`) se consultan solo cuando la tarea técnica específica lo exige.
@@ -62,7 +63,7 @@ skills/<skill-name>/
 │   └── *.md
 ├── resources/               # Plantillas listas para andamiaje (.template.md, configs de ejemplo)
 │   └── *.template.*
-└── scripts/                 # Validadores ejecutables sin dependencias externas (Node >= 18)
+└── scripts/                 # Validadores sin dependencias externas (Node soportado y parcheado)
     └── *.mjs
 ```
 
@@ -204,7 +205,9 @@ flowchart TD
 
 ## Guardrails Ejecutables y Herramientas CI/CD
 
-El kit provee **6 herramientas automáticas de validación** desarrolladas en Node.js puro (`.mjs`, compatible con Node >= 18) con **cero dependencias externas** (no requieren `npm install`). Pueden ejecutarse localmente o incorporarse a cualquier pipeline de integración continua.
+El kit provee **6 herramientas automáticas de validación** desarrolladas en Node.js puro (`.mjs`, runtime soportado y parcheado verificado) con **cero dependencias externas** (no requieren `npm install`). Pueden ejecutarse localmente o incorporarse a cualquier pipeline de integración continua.
+
+Antes de ejecutarlas, verificar el runtime contra los avisos oficiales vigentes. [.node-version](.node-version) fija Node.js `24.22.1`, parche publicado para los avisos de octubre de 2026 y verificado el 2026-10-27; debe revisarse ante nuevos avisos, junto con cualquier biblioteca integrada y los runtimes usados por las acciones de CI. El archivo no actualiza automáticamente el Node instalado ni certifica versiones futuras. Los 6 validadores comprueban calidad estructural; cada proyecto debe implementar además la compuerta obligatoria de seguridad descrita en la política.
 
 ### 1. `scaffold-project-docs.mjs`
 Inicializa el gobierno documental del proyecto generando `AGENTS.md`, `DESIGN.md`, `.editorconfig`, `.gitignore` y las 10 subcarpetas de `docs/` con su primera entrada en `changelog.md`:
@@ -247,7 +250,7 @@ node skills/institutional-design-system-ux/scripts/check-design-system.mjs \
 ```
 
 ### 6. `check-i18n-parity.mjs`
-Validador estático de paridad e integridad de diccionarios de internacionalización (Node.js >= 18, cero dependencias). Soporta simultáneamente diccionarios raíz (`public/i18n/{es,en}.json`) y scopes anidados (`public/i18n/<scope>/{es,en}.json`):
+Validador estático de paridad e integridad de diccionarios de internacionalización (Node.js soportado y parcheado, cero dependencias). Soporta simultáneamente diccionarios raíz (`public/i18n/{es,en}.json`) y scopes anidados (`public/i18n/<scope>/{es,en}.json`):
 * Comprueba la presencia de todos los idiomas requeridos en cada scope.
 * Valida sintaxis JSON estricta.
 * Garantiza paridad exacta de árbol de claves (cero claves faltantes o huérfanas entre idiomas).
@@ -271,17 +274,23 @@ on:
   pull_request:
     branches: [main, develop]
 
+permissions:
+  contents: read
+
 jobs:
   guardrails:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js (>= 18)
-        uses: actions/setup-node@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          node-version: 20
+          persist-credentials: false
+
+      - name: Setup Node.js (versión exacta revisada)
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
 
       - name: Check Documentation Governance
         run: node skills/enterprise-app-blueprint/scripts/check-docs-governance.mjs --root .
@@ -454,7 +463,7 @@ Para proponer una nueva skill o modificar una existente dentro de este kit, es o
 
 1. **Cumplimiento del Esquema**: Toda skill debe residir en `skills/<nombre>/`, contar con un `SKILL.md` con frontmatter YAML válido (`name` y `description` con activadores explícitos) y su correspondiente `agents/openai.yaml`.
 2. **Independencia Tecnológica**: Las instrucciones y patrones deben formularse de forma agnóstica de frameworks o lenguajes específicos, delegando detalles concretos a ejemplos o decoradores.
-3. **Cero Dependencias en Scripts**: Cualquier herramienta de validación debe implementarse en JavaScript estándar (`.mjs`, Node.js >= 18) utilizando exclusivamente los módulos nativos de Node (`node:fs`, `node:path`, `node:url`, etc.).
+3. **Cero Dependencias en Scripts**: Cualquier herramienta de validación debe implementarse en JavaScript estándar (`.mjs`, Node.js soportado y parcheado verificado según la política de tecnologías) utilizando exclusivamente los módulos nativos de Node (`node:fs`, `node:path`, `node:url`, etc.).
 4. **Verificación de Enlaces e Higiene**: Ningún documento Markdown debe contener enlaces relativos rotos, y las referencias normativas deben derivar a `references/` o `resources/` sin duplicar texto.
 
 ---

@@ -24,6 +24,8 @@ Guía operativa para organizar y conectar cualquier funcionalidad en backend y f
 
 ## Regla obligatoria antes de tocar código
 
+Al seleccionar o ejecutar tecnologías, cumplir [la política de seguridad de tecnologías](../security-and-auditability/references/technology-security-policy.md): usar versiones soportadas y parcheadas verificadas durante la tarea; bloquear vulnerabilidades conocidas aplicables de cualquier severidad o evidencia incompleta.
+
 1. Identificar el **slice dueño** de la capacidad y la **capa exacta** de cada pieza antes de crear archivos.
 2. Localizar un slice equivalente ya implementado en el repositorio y seguir su forma exacta.
 3. Si una necesidad parece exigir importar otro slice o saltarse una capa: **detenerse**. Definir primero el puerto correspondiente, promover el contrato mínimo al kernel compartido (`core` / `Common`) solo si existe un **segundo consumidor real**, o conectar ambos slices en la raíz de composición (`composition/`). Jamás usar reexports, imports directos a adaptadores concretos ni supresiones permanentes de linter.
@@ -75,7 +77,7 @@ Consulta las recetas detalladas y tablas de decisión en:
 
 ## Verificación automática de fronteras
 
-Ejecutar el script incluido (sin dependencias externas, Node >= 18) contra una configuración adaptada desde [boundaries.config.example.json](./resources/boundaries.config.example.json):
+Ejecutar el script incluido (sin dependencias externas, Node.js soportado y parcheado según la política de tecnologías) contra una configuración adaptada desde [boundaries.config.example.json](./resources/boundaries.config.example.json):
 
 ```bash
 node <ruta-skill>/scripts/check-architecture-boundaries.mjs --config ./boundaries.config.json
