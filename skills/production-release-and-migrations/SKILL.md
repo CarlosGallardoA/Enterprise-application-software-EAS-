@@ -31,9 +31,12 @@ Garantiza que ningún cambio llegue a QA, PreProducción o Producción sin pasar
 3. **Protocolo de SQL revisado + manifiesto `SHA-256` fuera de Desarrollo**:
    - Solo en Desarrollo local contra base loopback se permite migración directa automática.
    - En QA/PreProd/Prod: el pipeline compila el migrador y genera `--script-only migrations.sql` + `manifest.json` (con hashes `SHA-256` del SQL y los binarios). Tras revisión humana y respaldo verificado, el release ejecuta ese archivo exacto exigiendo `--target-database`, `--backup-ticket`, `--reviewed-script` y `--reviewed-sha256` coincidente.
-4. **Secretos y rutas persistentes fuera de la carpeta de publicación**:
-   - Nunca guardar secretos en archivos que cada compilación sobrescribe ni en el repositorio. Inyectarlos desde la configuración protegida del host o bóveda de secretos.
-   - Claves de protección de datos, archivos cifrados de evidencia y archivos de log viven en directorios persistentes **fuera de la carpeta publicada**, con permisos ACL mínimos exclusivos para la identidad del proceso.
+4. **Validación *Fail-Fast* en el arranque y triple aislamiento físico en disco**:
+   - **Configuración validada al iniciar (`ValidateOnStart`)**: toda sección de configuración (conexiones, orígenes HTTPS, presupuestos de memoria `> 0`, plazos Outbox y llaves criptográficas) se valida en el arranque del proceso; si falta un valor crítico (p. ej. la llave de cifrado documental), la API **se niega a arrancar de inmediato** en lugar de degradarse en silencio a texto plano o fallar a mitad de una petición.
+   - **Triple separación en servidor**:
+     1. *Carpeta de publicación* (reemplazada en cada deploy): jamás almacena secretos, logs ni documentos subidos por usuarios.
+     2. *Directorio documental (`RootPath`)*: carpeta persistente externa con ACL exclusivo del proceso para los archivos cifrados.
+     3. *Llave maestra `AES-256-GCM` y anillo de claves*: resguardados y respaldados **fuera del directorio documental** (guardar la llave junto a los archivos cifrados anula la protección ante copia de carpeta, y perderla vuelve ilegible el histórico).
 5. **Coherencia entre arquitectura en memoria y topología del servidor**:
    - Si el sistema usa workers en segundo plano (Outbox, barridos SLA), desactivar la suspensión por inactividad del proceso (*Idle Timeout = 0* / *AlwaysRunning*).
    - Si el sistema usa cachés o almacén de tickets en memoria local del proceso, fijar explícitamente **1 único worker process / 1 instancia** hasta introducir almacenamiento distribuido revocable.
@@ -50,7 +53,7 @@ Consulta el detalle completo paso a paso en:
 4. Validación previa de archivos de entorno del cliente (cortando con `exit 1` si falta configurar `apiUrl` u orígenes requeridos).
 5. Compilación en modo `Release` con **0 advertencias y 0 errores**.
 6. Ejecución de pruebas unitarias + pruebas de integración contra instancia de base de datos efímera privada del job, seguida de paso de limpieza con condición `always()`.
-7. Linters de código, formato, fronteras arquitectónicas (`check-architecture-boundaries.mjs`) y sistema de diseño (`check-design-system.mjs`).
+7. Linters de código, formato, gobierno documental (`check-docs-governance.mjs`), fronteras arquitectónicas (`check-architecture-boundaries.mjs`), higiene (`audit-code-hygiene.mjs`) y sistema de diseño + paridad i18n (`check-design-system.mjs`, `check-i18n-parity.mjs`).
 8. Suite E2E de endurecimiento (CSP, Trusted Types, retornos inseguros) sobre el artefacto web compilado.
 9. Verificación estructural de los 3 artefactos separados antes de subirlos: `api` (binarios + manifiestos + config de servidor), `web` (bundle + reglas de reescritura SPA + `i18n`) y `reviewed-migrations` (`migrations.sql` + `manifest.json` + binario migrador).
 

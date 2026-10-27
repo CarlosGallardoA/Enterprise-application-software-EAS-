@@ -3,7 +3,7 @@
 [![Specification](https://img.shields.io/badge/spec-Agent%20Skills%20RFC-0A84FF?style=flat-square)](https://github.com/agent-skills/spec)
 [![Compatibility](https://img.shields.io/badge/agents-Antigravity%20|%20Claude%20Code%20|%20Codex%20|%20Cursor-6E40C9?style=flat-square)](#instalaci%C3%B3n-y-compatibilidad-multi-agente)
 [![Architecture](https://img.shields.io/badge/architecture-Hexagonal%20%2B%20Vertical%20Slices-10B981?style=flat-square)](#2-hexagonal-vertical-slices)
-[![Runtime](https://img.shields.io/badge/runtime-Node.js%20%3E%3D%2018%20(Zero--Deps)-F59E0B?style=flat-square)](#guardrails-ejecutables-y-herramientas-ci)
+[![Runtime](https://img.shields.io/badge/runtime-Node.js%20%3E%3D%2018%20(Zero--Deps%2C%206%20Guardrails)-F59E0B?style=flat-square)](#guardrails-ejecutables-y-herramientas-cicd)
 [![Accessibility](https://img.shields.io/badge/standards-WCAG%202.1%20AA%20|%20OWASP-3B82F6?style=flat-square)](#6-institutional-design-system-ux)
 [![Testing Law](https://img.shields.io/badge/testing-Zero--Tampering%20Law-EF4444?style=flat-square)](#4-layered-testing-strategy)
 
@@ -41,7 +41,9 @@ La mayoría de los kits de instrucciones para IA se limitan a listas pasivas de 
 
 * **100 % Agnóstico e Independiente**: Los patrones arquitectónicos, las reglas de concurrencia, las políticas de seguridad y la higiene se aplican con igual rigor en una API en ASP.NET Core / C#, servicios en Go, microservicios en Python o aplicaciones web en Next.js / Vue / Angular.
 * **Ley Cero de Integridad de Pruebas (*Anti-Tampering Law*)**: Queda terminantemente prohibido modificar, relajar o silenciar (`skip`) una prueba que falla solo para conseguir un pipeline en verde. Todo fallo se asume como indicio de un defecto real en el código de producción.
-* **Guardrails Automatizados sin Dependencias**: Incluye 5 scripts en Node.js puro (`.mjs`, Node >= 18) con cero dependencias en `npm`, listos para incorporarse como compuertas obligatorias de pre-commit y CI/CD.
+* **Guardrails Automatizados sin Dependencias**: Incluye **6 scripts en Node.js puro** (`.mjs`, Node >= 18) con cero dependencias en `npm`, listos para incorporarse como compuertas obligatorias de pre-commit y CI/CD.
+* **Validación *Fail-Fast* en Arranque y Triple Aislamiento en Disco**: Toda configuración crítica se valida al inicio (`ValidateOnStart`); el servidor mantiene separación física estricta entre carpeta de publicación (reemplazable en deploy), directorio documental persistente (`RootPath`) y anillo de llaves criptográficas/maestra `AES-256-GCM` resguardado fuera del almacenamiento documental.
+* **Ergonomía de Teclado, Precarga Ociosa y Cero PII en Navegador**: Paleta de comandos global accesible (`Ctrl+K` / `Cmd+K`), precarga ociosa (`IdlePreloading`) sin saturación de red, carga dinámica (`import()`) de SDKs pesados de autenticación federada y prohibición absoluta de almacenar PII en `localStorage`.
 * **Optimización de Contexto (*Progressive Disclosure*)**: Los agentes solo cargan en memoria el nombre y activadores de la skill. El archivo `SKILL.md` se lee únicamente bajo demanda, y las referencias profundas (`references/`) se consultan solo cuando la tarea técnica específica lo exige.
 * **Gobernanza Documental Estricta**: Modelo de entrada breve (`AGENTS.md`) con derivación a 10 subcarpetas canónicas en `docs/` y bitácora inmutable (`docs/historial/changelog.md`) con entradas congeladas correlativas `### AAAA-MM-DD (N)`.
 
@@ -82,13 +84,13 @@ description: >-
 | # | Skill | Responsabilidad Principal | Activadores Clave | Artefactos Incluidos |
 |---|---|---|---|---|
 | 1 | [`enterprise-app-blueprint`](#1-enterprise-app-blueprint) | Estructura base de repositorio, gobernanza documental, contrato universal de errores, concurrencia optimista y paginación. | `nuevo proyecto`, `blueprint`, `AGENTS.md`, `contrato de errores`, `concurrencia` | Scripts: `scaffold-project-docs`, `check-docs-governance` + 5 plantillas |
-| 2 | [`hexagonal-vertical-slices`](#2-hexagonal-vertical-slices) | Arquitectura Hexagonal simétrica + Vertical Slicing backend/frontend, raíces de composición y decoradores. | `arquitectura hexagonal`, `vertical slicing`, `ports and adapters`, `boundaries` | Script: `check-architecture-boundaries` + `boundaries.config.example.json` |
-| 3 | [`clean-code-and-standards`](#3-clean-code-and-standards) | Política de cero advertencias, higiene de comentarios, cero código muerto, reloj determinista y consultas acotadas. | `clean code`, `revisión de código`, `código muerto`, `zero warnings` | Script: `audit-code-hygiene` + 2 guías de referencia |
+| 2 | [`hexagonal-vertical-slices`](#2-hexagonal-vertical-slices) | Arquitectura Hexagonal simétrica + Vertical Slices backend/frontend, raíces de composición en 3 niveles (global, shell, ruta diferida) protegiendo el code-splitting. | `arquitectura hexagonal`, `vertical slicing`, `ports and adapters`, `boundaries` | Script: `check-architecture-boundaries` + `boundaries.config.example.json` |
+| 3 | [`clean-code-and-standards`](#3-clean-code-and-standards) | Política de 0 advertencias, higiene de comentarios, reloj determinista, rendimiento real (precarga ociosa, SDKs dinámicos, fuentes auto-hospedadas) y timeouts escalonados. | `clean code`, `revisión de código`, `código muerto`, `zero warnings`, `rendimiento` | Script: `audit-code-hygiene` + 2 guías de referencia |
 | 4 | [`layered-testing-strategy`](#4-layered-testing-strategy) | Ley Cero Anti-Tampering, pirámide de pruebas honesta (fakes manuales, fixtures completas, BD efímera, E2E). | `tests`, `testing`, `pruebas unitarias`, `fakes`, `disposable database` | Manual: `test-integrity-and-triage` + guías de fakes/fixtures |
 | 5 | [`transactional-outbox-and-polling`](#5-transactional-outbox-and-polling) | Efectos secundarios durables (*at-least-once*), Outbox con leases, jobs de barrido SLA y sondeo disciplinado (`PollScheduler`). | `outbox`, `eventos durables`, `background jobs`, `SLA sweep`, `polling` | Especificaciones de Outbox, leases SQL y `PollScheduler` |
-| 6 | [`institutional-design-system-ux`](#6-institutional-design-system-ux) | Tokens semánticos de 2 niveles, interfaces operativas densas, accesibilidad WCAG 2.1 AA e i18n tipada por scopes. | `sistema de diseño`, `tokens`, `WCAG`, `accesibilidad`, `vistas operativas`, `i18n` | Script: `check-design-system` + `DESIGN.template.md`, `tokens.template.css` |
+| 6 | [`institutional-design-system-ux`](#6-institutional-design-system-ux) | Tokens semánticos de 2 niveles, paleta `Ctrl+K` accesible (cero PII en `localStorage`), WCAG 2.1 AA e i18n tipada con paridad exacta de claves. | `sistema de diseño`, `tokens`, `WCAG`, `accesibilidad`, `vistas operativas`, `i18n`, `Ctrl+K` | Scripts: `check-design-system`, `check-i18n-parity` + `DESIGN.template.md`, `tokens.template.css` |
 | 7 | [`security-and-auditability`](#7-security-and-auditability) | Sesiones revocables, permisos en BD anti-IDOR, cifrado documental AES-256-GCM con AAD, CSP estricto y redacción de PII. | `seguridad`, `autenticación`, `IDOR`, `cifrado`, `CSP`, `logs estructurados` | Especificación criptográfica, matrices IDOR y redacción de logs |
-| 8 | [`production-release-and-migrations`](#8-production-release-and-migrations) | `DbMigrator` CLI desacoplado de la API (3 identidades SQL), pipelines CI/CD de 10 compuertas y checklists post-deploy. | `despliegue`, `CI/CD`, `migraciones`, `DbMigrator`, `health checks`, `producción` | Protocolo `DbMigrator`, checklist de despliegue y compuertas CI |
+| 8 | [`production-release-and-migrations`](#8-production-release-and-migrations) | `DbMigrator` CLI desacoplado de la API (3 identidades SQL), *Fail-Fast* (`ValidateOnStart`), triple aislamiento en disco, HTTP/2 con compresión y 10 compuertas CI/CD. | `despliegue`, `CI/CD`, `migraciones`, `DbMigrator`, `health checks`, `producción`, `HTTP/2` | Protocolo `DbMigrator`, checklist de despliegue y compuertas CI |
 | 9 | [`audit-and-skill-orchestration`](#9-audit-and-skill-orchestration) | Coordinación sin solapamientos con skills de auditoría de seguridad (`security-audit`), consistencia UX y entrevista previa. | `auditoría`, `security audit`, `revisión UI/UX`, `orquestación`, `grill me` | Matriz de sinergia entre skills y flujos de remediación |
 
 ---
@@ -107,14 +109,24 @@ Establece los cimientos estructurales y normativos para que una aplicación crez
 Resuelve la organización del código respondiendo simultáneamente a dos preguntas:
 * **Dirección de Dependencias (Hexagonal)**: El Dominio (`domain`) no depende de nada externo; la Aplicación (`application`) orquesta casos de uso y define puertos; la Infraestructura (`infrastructure`) implementa los adaptadores; la Presentación (`ui` / `api`) solo consume puertos de entrada.
 * **Propiedad de Negocio (Vertical Slices)**: Cada funcionalidad (`features/<nombre-feature>/`) encapsula sus casos de uso, contratos y adaptadores, erradicando carpetas horizontales genéricas y desordenadas.
-* **Composición Limpia**: Inyección y puenteo exclusivamente mediante raíces de composición por alcance (`composition/`), permitiendo decorar puertos con caché o métricas sin contaminar la lógica de negocio.
+* **Composición por Alcance y Carga Diferida Real (sin anular el code-splitting)**:
+  * *Nivel global (`app.config`)*: Exclusivamente fontanería transversal (router con precarga ociosa `IdlePreloading`, cliente HTTP e interceptores, error handler, i18n base y wiring mínimo de sesión para `authGuard`). **Prohibido** registrar casos de uso o adaptadores de features aquí, ya que arrastraría sus módulos al bundle inicial.
+  * *Nivel shell autenticada (`''` en `app.routes`)*: Wiring compartido por 2 o más features activas tras iniciar sesión (notificaciones/heartbeat de cabecera, borrador compartido), sin duplicarlo ni subirlo a `app.config`.
+  * *Nivel de ruta diferida (`loadChildren` → `<feature>.routes`)*: Cada feature declara sus propios `providers` (adaptador HTTP + casos de uso + stores). Los adaptadores de librerías voluminosas y condicionales (ej. SDKs de SSO/OIDC) las cargan con `import()` dinámico en su primer uso.
 
 #### 3. `clean-code-and-standards`
 Garantiza precisión y mantenibilidad con reglas no negociables:
 * **0 Advertencias**: Configuración de compiladores y analizadores con tratamiento de advertencias como errores (`treat warnings as errors`).
 * **Higiene Quirúrgica de Comentarios**: Prohibición de narrativa histórica ("corregido según auditoría", "a pedido del usuario") o paráfrasis obvia. Los comentarios explican exclusivamente invariantes técnicas no obvias o limitaciones de integraciones externas.
 * **Reloj Inyectado**: Prohibición del uso estático o directo del reloj del sistema (`DateTime.UtcNow`, `new Date()`, `time.Now()`) en dominios o casos de uso; siempre se inyecta un proveedor de tiempo abstracto para garantizar pruebas deterministas.
-* **Rendimiento de Consultas**: Lecturas optimizadas sin seguimiento de cambios (`AsNoTracking`, proyecciones directas DTO), límites estrictos en lotes y presupuesto de memoria.
+* **Rendimiento Real en Cliente Web y Red HTTP**:
+  * *Precarga ociosa (`IdlePreloading` con `requestIdleCallback`)*: Nunca usar `PreloadAllModules` agresivo al arrancar; bajo HTTP/1.1 (límite de 6 conexiones por origen) satura la red y provoca timeouts en llamadas iniciales.
+  * *Interceptor de resiliencia sin reintentos de `TimeoutError`*: Un timeout bajo congestión indica encolamiento; reintentarlo agrava el cuello de botella. Solo reintentar fallos reales de transporte (`status === 0`) en lecturas idempotentes (`GET`).
+  * *Consultas paralelas y campos computados*: Paralelización de lecturas de vista con `Promise.all` y formateos precalculados con señales/selectores memoizados (`computed()`) en lugar de invocar métodos por cada fila en plantillas.
+  * *Carga bajo demanda (`import()` dinámico)* de SDKs federados pesados (~250+ kB) y **tipografías auto-hospedadas (`.woff2`)** para eliminar llamadas externas a Google Fonts en runtime y blindar la CSP.
+* **Escalonamiento de Timeouts SQL y Reintentos Idempotentes**:
+  * `CommandTimeout` de base de datos en API (`10 s`) por debajo del timeout HTTP del cliente (`15 s`) para trazas limpias; extendido en `DbMigrator` (`5 min`).
+  * Transacciones manuales envueltas en `ExecutionStrategy` con idempotencia garantizada.
 
 #### 4. `layered-testing-strategy`
 Implementa una suite de pruebas predecible y honesta:
@@ -134,13 +146,16 @@ Manejo disciplinado de la asincronía y el tiempo real sin introducir complejida
 * **`PollScheduler` en Cliente**: Mecanismo de sondeo periódico disciplinado con retroceso exponencial, pausa cuando la pestaña está en segundo plano y detección de cambios de red, ideal para entornos con proxies institucionales donde SSE o WebSockets son inestables.
 
 #### 6. `institutional-design-system-ux`
-Diseño de software empresarial centrado en la usabilidad y la accesibilidad:
+Diseño de software empresarial centrado en la usabilidad, la ergonomía y la accesibilidad:
 * **Sistema de Tokens de Dos Niveles**:
   1. *Tokens Primitivos / Globales*: Paleta cruda (`--brand-blue-500`, `--neutral-100`).
   2. *Tokens Semánticos de Decisión*: Propósito contextual explícito (`--color-surface-card`, `--color-border-interactive`, `--text-danger`). El código de producción consume **únicamente tokens semánticos**.
-* **Patrones Operativos Densos**: Vistas de expedientes, asistentes (*wizards*) multi-etapa con preservación de estado, tablas con transformación automática a tarjetas móviles, modales con confirmación segura y líneas de tiempo auditables.
+* **Patrones Operativos Densos y Paleta de Comandos (`Ctrl+K` / `Cmd+K`)**:
+  * Expedientes, asistentes multi-etapa con preservación de estado, tablas con transformación automática a tarjetas móviles y modales seguros.
+  * *Paleta de comandos accesible*: Diálogo modal con `role="combobox"`, sincronización `aria-activedescendant` al navegar con flechas, ejecución con `Enter`, `Escape` y devolución limpia del foco. Búsquedas con debounce y cancelación inmediata de peticiones en vuelo.
+  * *Higiene estricta de `localStorage` (Cero PII)*: En la lista de recientes, almacenar exclusivamente rutas o claves estáticas de navegación (`"nav.incidents"`). Prohibido almacenar expedientes, nombres o datos de usuarios; purga automática de entradas heredadas.
 * **Accesibilidad WCAG 2.1 AA**: Paridad de foco obligatoria (`:focus-visible` explícito; prohibido `outline: none` sin reemplazo visible), ratios de contraste certificados y navegación íntegra por teclado.
-* **Internacionalización Robusta**: Cero cadenas de texto literales en plantillas HTML/JSX. Soporte de namespaces de traducción con validación estática.
+* **Internacionalización y Paridad de Diccionarios**: Cero cadenas literales en plantillas HTML. Validación estática obligatoria de paridad exacta de claves, interpolación y traducciones no vacías en todos los idiomas.
 
 #### 7. `security-and-auditability`
 Seguridad defensiva en profundidad desde las bases del código:
@@ -152,12 +167,16 @@ Seguridad defensiva en profundidad desde las bases del código:
 
 #### 8. `production-release-and-migrations`
 Entrega confiable y reproducible en servidores empresariales:
-* **Separación de Privilegios y Desacoplamiento del Runtime**: La API de producción **nunca ejecuta DDL ni crea usuarios privilegiados al iniciar**. Las migraciones se gestionan mediante una herramienta CLI independiente (`DbMigrator`) ejecutada exclusivamente en la fase de despliegue.
-* **Triple Identidad de Base de Datos**:
-  1. *Identidad de Migración*: Permisos DDL transitorios para la ejecución del `DbMigrator`.
-  2. *Identidad de Aplicación (Runtime)*: Permisos mínimos de lectura/escritura (`SELECT`, `INSERT`, `UPDATE`, `DELETE`) sin privilegios de modificación de esquema.
-  3. *Identidad de Soporte/Auditoría*: Solo lectura (`SELECT`) sin acceso a tablas de secretos.
-* **Manifiesto SQL con Integridad SHA-256**: Los scripts de migración son auditables, idempotentes y verificados mediante hash criptográfico para evitar alteraciones post-revisión.
+* **Validación *Fail-Fast* en el Arranque (`ValidateOnStart`)**:
+  * Toda sección de configuración (conexiones, orígenes HTTPS, presupuestos de memoria, Outbox, llaves criptográficas) se valida en el arranque del proceso; si falta un valor crítico (ej. llave de cifrado documental), la API **se niega a arrancar de inmediato** en lugar de degradarse en silencio a texto plano o fallar a mitad de una transacción.
+* **Triple Separación Física en Servidor**:
+  1. *Carpeta de publicación* (reemplazada en cada deploy): Jamás almacena secretos, logs ni documentos de usuarios.
+  2. *Directorio documental (`RootPath`)*: Carpeta externa persistente con ACL exclusivo para la identidad del proceso.
+  3. *Llave maestra `AES-256-GCM` y anillo de claves*: Resguardados y respaldados **fuera del directorio documental** (guardar la llave junto a los archivos anula la protección ante copia de carpeta).
+* **Servidor Web y Red**:
+  * **HTTP/2 activo** sobre HTTPS/TLS 1.2+ (elimina el cuello de botella de 6 conexiones de HTTP/1.1) y **compresión estática/dinámica** (`br`/`gzip`) verificada.
+* **Separación de Privilegios en Base de Datos**:
+  * La API de producción **nunca ejecuta DDL ni crea usuarios privilegiados al iniciar**. Las migraciones se gestionan mediante la herramienta CLI independiente `DbMigrator` con triple identidad SQL (Migración, Runtime y Auditoría) y manifiesto con integridad `SHA-256`.
 * **Compuertas de Calidad CI/CD**: Pipeline de 10 etapas automatizadas antes de autorizar el paso a producción.
 
 #### 9. `audit-and-skill-orchestration`
@@ -172,12 +191,12 @@ Establece la coordinación armónica y sin conflictos entre las skills del kit y
 
 ```mermaid
 flowchart TD
-    A["1. enterprise-app-blueprint<br/>(Scaffold docs, changelog, contratos de error)"] --> B["2. hexagonal-vertical-slices<br/>(Fronteras de módulos, puertos y adaptadores)"]
-    B --> C["3. institutional-design-system-ux<br/>(DESIGN.md, tokens semánticos, accesibilidad)"]
-    C --> D["4. security-and-auditability<br/>(Sesiones, anti-IDOR, AES-256-GCM, CSP)"]
-    D --> E["5. clean-code-and-standards + layered-testing-strategy<br/>(Implementación TDD, fakes, BD efímera, 0 advertencias)"]
+    A["1. enterprise-app-blueprint<br/>(Scaffold docs, changelog, contratos de error)"] --> B["2. hexagonal-vertical-slices<br/>(Fronteras de módulos, puertos y 3 niveles de wiring)"]
+    B --> C["3. institutional-design-system-ux<br/>(DESIGN.md, tokens, paridad i18n, Ctrl+K accesible)"]
+    C --> D["4. security-and-auditability<br/>(Sesiones, anti-IDOR, AES-256-GCM, CSP, sin PII)"]
+    D --> E["5. clean-code-and-standards + layered-testing-strategy<br/>(Implementación TDD, precarga ociosa, fakes, BD efímera)"]
     E --> F["6. transactional-outbox-and-polling<br/>(Eventos at-least-once, SLA sweeps, PollScheduler)"]
-    F --> G["7. production-release-and-migrations<br/>(DbMigrator desacoplado, CI/CD de 10 compuertas)"]
+    F --> G["7. production-release-and-migrations<br/>(DbMigrator, ValidateOnStart, triple aislamiento, HTTP/2)"]
     G --> H["8. audit-and-skill-orchestration<br/>(Auditorías adversariales periódicas y remediación)"]
 ```
 
@@ -185,7 +204,7 @@ flowchart TD
 
 ## Guardrails Ejecutables y Herramientas CI/CD
 
-El kit provee **5 herramientas automáticas de validación** desarrolladas en Node.js puro (`.mjs`, compatible con Node >= 18) con **cero dependencias externas** (no requieren `npm install`). Pueden ejecutarse localmente o incorporarse a cualquier pipeline de integración continua.
+El kit provee **6 herramientas automáticas de validación** desarrolladas en Node.js puro (`.mjs`, compatible con Node >= 18) con **cero dependencias externas** (no requieren `npm install`). Pueden ejecutarse localmente o incorporarse a cualquier pipeline de integración continua.
 
 ### 1. `scaffold-project-docs.mjs`
 Inicializa el gobierno documental del proyecto generando `AGENTS.md`, `DESIGN.md`, `.editorconfig`, `.gitignore` y las 10 subcarpetas de `docs/` con su primera entrada en `changelog.md`:
@@ -227,6 +246,20 @@ node skills/institutional-design-system-ux/scripts/check-design-system.mjs \
   --tokens src/styles/tokens.css
 ```
 
+### 6. `check-i18n-parity.mjs`
+Validador estático de paridad e integridad de diccionarios de internacionalización (Node.js >= 18, cero dependencias). Soporta simultáneamente diccionarios raíz (`public/i18n/{es,en}.json`) y scopes anidados (`public/i18n/<scope>/{es,en}.json`):
+* Comprueba la presencia de todos los idiomas requeridos en cada scope.
+* Valida sintaxis JSON estricta.
+* Garantiza paridad exacta de árbol de claves (cero claves faltantes o huérfanas entre idiomas).
+* Prohíbe traducciones vacías o compuestas únicamente por espacios en blanco.
+* Verifica la correspondencia exacta de variables interpoladas (`{{param}}` y `{param}`).
+```bash
+node skills/institutional-design-system-ux/scripts/check-i18n-parity.mjs \
+  --root . \
+  --i18n public/i18n \
+  --langs es,en
+```
+
 ### Ejemplo de Integración en GitHub Actions
 
 ```yaml
@@ -261,6 +294,9 @@ jobs:
 
       - name: Check Design System & Accessibility
         run: node skills/institutional-design-system-ux/scripts/check-design-system.mjs --root .
+
+      - name: Check i18n Parity & Integrity
+        run: node skills/institutional-design-system-ux/scripts/check-i18n-parity.mjs --root . --i18n public/i18n --langs es,en
 ```
 
 ---
@@ -374,13 +410,13 @@ My_Project_Skills/
     ├── hexagonal-vertical-slices/              # Arquitectura Hexagonal + Vertical Slices simétrica
     │   ├── SKILL.md
     │   ├── agents/openai.yaml
-    │   ├── references/                         # Anatomía de slices backend y frontend
+    │   ├── references/                         # Anatomía de slices backend y frontend (wiring 3 niveles)
     │   ├── resources/                          # boundaries.config.example.json
     │   └── scripts/                            # check-architecture-boundaries.mjs
-    ├── clean-code-and-standards/               # 0 advertencias, higiene de comentarios, reloj inyectado
+    ├── clean-code-and-standards/               # 0 advertencias, higiene, reloj inyectado, rendimiento y timeouts
     │   ├── SKILL.md
     │   ├── agents/openai.yaml
-    │   ├── references/                         # Guías de auditoría de comentarios, nulos y concurrencia
+    │   ├── references/                         # Guías de comentarios, nulos, concurrencia y cliente web
     │   └── scripts/                            # audit-code-hygiene.mjs
     ├── layered-testing-strategy/               # Ley Cero Anti-Tampering, fakes, BD efímera, E2E
     │   ├── SKILL.md
@@ -390,20 +426,20 @@ My_Project_Skills/
     │   ├── SKILL.md
     │   ├── agents/openai.yaml
     │   └── references/                         # Runbook de Outbox, especificaciones técnicas
-    ├── institutional-design-system-ux/         # Tokens de 2 niveles, WCAG 2.1 AA, UI operativa, i18n
+    ├── institutional-design-system-ux/         # Tokens de 2 niveles, WCAG 2.1 AA, Ctrl+K, sin PII, i18n
     │   ├── SKILL.md
     │   ├── agents/openai.yaml
-    │   ├── references/                         # Tokens semánticos, UX densa, feedback patterns
+    │   ├── references/                         # Tokens semánticos, UX densa, feedback patterns, paleta Ctrl+K
     │   ├── resources/                          # DESIGN.template.md, tokens.template.css
-    │   └── scripts/                            # check-design-system.mjs
+    │   └── scripts/                            # check-design-system.mjs, check-i18n-parity.mjs
     ├── security-and-auditability/              # Sesiones revocables, anti-IDOR, AES-256-GCM, CSP, PII
     │   ├── SKILL.md
     │   ├── agents/openai.yaml
     │   └── references/                         # Especificaciones criptográficas, matrices de permisos
-    ├── production-release-and-migrations/      # DbMigrator desacoplado, 10 compuertas CI/CD, post-deploy
+    ├── production-release-and-migrations/      # DbMigrator desacoplado, ValidateOnStart, triple aislamiento, CI/CD
     │   ├── SKILL.md
     │   ├── agents/openai.yaml
-    │   └── references/                         # Protocolo DbMigrator, pipelines y verificación
+    │   └── references/                         # Protocolo DbMigrator, pipelines, HTTP/2 y checklist post-deploy
     └── audit-and-skill-orchestration/          # Coordinación con security-audit, UI/UX skills y grilling
         ├── SKILL.md
         ├── agents/openai.yaml

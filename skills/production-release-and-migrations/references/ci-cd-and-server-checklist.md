@@ -26,10 +26,11 @@ Antes de empaquetar el cliente web para QA/PreProd/Prod, correr un script rápid
 
 ## 3. Checklist Post-Despliegue (Backend + Frontend)
 
-### Backend
-- [ ] Variables de entorno configuradas a nivel de host/servidor (sobreviven futuros deploys sin sobrescribirse).
+### Backend y Servidor Web
+- [ ] **HTTP/2 activo** sobre HTTPS/TLS 1.2+ (elimina el cuello de botella de 6 conexiones por origen de HTTP/1.1) y **compresión estática/dinámica habilitada** (`br`/`gzip`) verificando tamaño transferido real de los bundles JS/CSS.
+- [ ] Variables de entorno configuradas a nivel de host/servidor (sobreviven futuros deploys sin sobrescribirse) y validadas con *Fail-Fast* (`ValidateOnStart`) al iniciar el proceso.
 - [ ] Proceso configurado sin suspensión por inactividad (*AlwaysRunning* / *Idle Timeout = 0*) y con **1 único worker** si existen cachés o sesiones en memoria local.
-- [ ] Carpetas externas persistentes (anillo de claves, documentos cifrados y logs) creadas con permisos exclusivos del proceso; llave `AES-256-GCM` única por ambiente y respaldada por separado.
+- [ ] Triple aislamiento verificado: carpetas externas persistentes (anillo de claves, documentos cifrados y logs) fuera de la carpeta de publicación, con llave `AES-256-GCM` única por ambiente almacenada y respaldada por separado del repositorio documental.
 - [ ] Adaptadores simulados desactivados (`false`) y HTTPS obligatorio activo.
 - [ ] `/health/live` y `/health/ready` responden `200` con estado agregado; `/health/details` exige sesión administrativa (`401` anónimo).
 - [ ] Se genera el archivo de log estructurado del día con el evento de inicio y trazas por petición.

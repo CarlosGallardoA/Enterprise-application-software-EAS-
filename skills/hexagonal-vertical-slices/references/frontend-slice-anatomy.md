@@ -40,10 +40,11 @@ src/app/
 - Son clases planas instanciadas mediante fábrica en el alcance de la ruta que las usa (p. ej. el contenedor de un wizard o de una vista gestora), nunca globales por defecto salvo el estado transversal de sesión.
 - **Segregación de interfaces (Doble Puerto)**: para un store consumido ampliamente (como la sesión activa), separar `SessionQueryPort` (solo lectura: usuario actual, permisos) de `SessionCommandsPort` (mutación: iniciar/cerrar/limpiar sesión). Registrar la instancia concreta **una sola vez** y enlazar ambos tokens a esa única instancia (`useExisting` / alias de referencia) para evitar duplicar el estado en memoria.
 
-## Composición por alcance y carga diferida
+## Composición por alcance y carga diferida real (sin anular el code-splitting)
 
-- **Nivel global (`app.config`)**: sesión, cliente HTTP + cadena ordenada de interceptores (conversión de fallas tipadas, credenciales, antiforgery, manejo de `401`, conflicto `412`, resiliencia de red), manejador global de errores e i18n base.
-- **Nivel de ruta diferida (`<feature>.routes`)**: enlazar el puerto al adaptador HTTP e instanciar los casos de uso/stores de esa feature dentro de los `providers` de la ruta perezosa. Así el código y las dependencias de la feature no se descargan ni instancian hasta navegar a ella, y los stores de asistentes/formularios nacen limpios al entrar.
+- **Nivel global (`app.config`)**: exclusivamente fontanería transversal (router con precarga ociosa `IdlePreloading`, cliente HTTP + cadena ordenada de interceptores, manejador global de errores, i18n base y el wiring mínimo de sesión requerido por `authGuard`). **Prohibido** registrar casos de uso o adaptadores de features aquí, ya que arrastraría sus módulos al bundle inicial.
+- **Nivel de ruta shell autenticada (`''` en `app.routes`)**: wiring compartido por 2 o más features activas tras iniciar sesión (ej. notificaciones/heartbeat de la cabecera o borrador compartido), sin duplicarlo ni subirlo a `app.config`.
+- **Nivel de ruta diferida (`loadChildren` → `<feature>.routes`)**: cada feature expone su archivo de rutas perezoso que declara sus propios `providers` (adaptador HTTP + casos de uso + stores de vista). Para librerías externas voluminosas de uso condicional (ej. SDK de login federado SSO/MSAL), el adaptador las carga con `import()` dinámico la primera vez que se invocan, nunca al iniciar la app.
 
 ## Criterio de UX arquitectónica: Maestro-Detalle inline vs. Ruta separada en CRUDs
 

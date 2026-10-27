@@ -44,3 +44,16 @@ En librerías de i18n con carga perezosa por ruta, la función imperativa `trans
    - Si aún no cargó, extrae el `<scope>` de la clave, espera de forma segura la carga de `<scope>/<activeLang>` capturando errores de red con fallback legible, y luego traduce.
 2. Prohibir mediante regla de linter llamar `toast.*(i18n.translate(...))` directamente en features.
 3. Si se convierte un stream reactivo de cambio de idioma en estado reactivo de UI (`signal`), diferir su emisión al microtask/scheduler siguiente para no mutar señales sincrónicamente en medio del renderizado.
+
+## 5. Paleta de Comandos (`Ctrl+K` / `Cmd+K`) y Cero PII en Almacenamiento del Navegador
+
+En sistemas operativos densos, ofrecer una paleta de comandos global activable con `Ctrl+K` / `Cmd+K` acelera la navegación y búsqueda sin levantar las manos del teclado:
+
+1. **Accesibilidad y ergonomía de teclado**:
+   - Diálogo modal con `role="combobox"`, `aria-expanded`, `aria-controls` y `aria-activedescendant` sincronizado al navegar con `ArrowUp`/`ArrowDown`, ejecución con `Enter`, cierre con `Escape` y devolución limpia del foco al elemento previo.
+2. **Autorización y cancelación de búsquedas en vuelo**:
+   - Mostrar únicamente rutas y comandos permitidos por los permisos vigentes de la sesión actual.
+   - Delegar las búsquedas remotas (expedientes, colas pendientes) en casos de uso con *debounce* y cancelación inmediata de peticiones anteriores cuando el usuario sigue escribiendo o cierra la paleta.
+3. **Higiene estricta de `localStorage` en «Recientes» (Cero PII)**:
+   - En la lista de elementos recientes, persistir en `localStorage` **exclusivamente claves o rutas de navegación estáticas** (ej. `"nav.incidents"`, `"/enfermeria"`).
+   - **Prohibido** persistir en `localStorage` o `sessionStorage` números de expediente, nombres de personas, descripciones o metadatos devueltos por búsquedas (en equipos institucionales compartidos, otro operador vería rastros sensibles). Al inicializar, purgar o migrar automáticamente cualquier entrada heredada que no cumpla el esquema estricto de solo-navegación.

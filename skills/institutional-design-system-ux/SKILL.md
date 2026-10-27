@@ -65,12 +65,16 @@ Consulta la especificación completa y recetas de implementación en:
 4. **Rejillas adaptadas al contenedor real (no al viewport)**:
    - Usar `grid-template-columns: repeat(auto-fit, minmax(min(100%, Xrem), 1fr))` y `minmax(0, 1fr)` para que formularios dentro de paneles laterales o wizards estrechos se apilen sin truncar correos ni nombres largos.
 
-## Verificación automática del sistema de diseño
+## Verificación automática del sistema de diseño y paridad i18n
 
-Integrar en el comando `lint` del proyecto el validador incluido (cero dependencias, Node >= 18):
+Integrar en el comando `lint` del proyecto los dos validadores incluidos (cero dependencias, Node >= 18):
 
 ```bash
+# 1. Tokens semánticos, foco accesible y cero textos literales sueltos en HTML
 node <ruta-skill>/scripts/check-design-system.mjs --root . --styles src/styles --app src/app --tokens src/styles/tokens.css
+
+# 2. Paridad exacta de claves, placeholders ({param} / {{param}}) y cero vacíos entre idiomas (raíz y scopes)
+node <ruta-skill>/scripts/check-i18n-parity.mjs --root . --i18n public/i18n --langs es,en
 ```
 
-Comprueba colores hex fuera de `tokens.css`, fugas de tokens primitivos `--brand-*`, `transition: all`, `outline: none` sin reemplazo accesible, textos literales en plantillas HTML y marcadores de excepción `design-system-allow: <check> — razón` huérfanos.
+`check-design-system.mjs` comprueba colores hex fuera de `tokens.css`, fugas de tokens primitivos `--brand-*`, `transition: all`, `outline: none` sin reemplazo accesible, textos literales en plantillas HTML y marcadores de excepción `design-system-allow: <check> — razón` huérfanos; `check-i18n-parity.mjs` garantiza que ningún idioma se quede con claves faltantes, variables interpoladas rotas ni traducciones en blanco.
