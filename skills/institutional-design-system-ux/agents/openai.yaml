@@ -1,0 +1,6 @@
+interface:
+  display_name: "Institutional Design System & UX"
+  short_description: "Tokens semánticos, vistas operativas, accesibilidad WCAG AA e i18n"
+  default_prompt: "Diseña o audita esta interfaz siguiendo el sistema de tokens semánticos, patrones operativos y WCAG AA."
+policy:
+  allow_implicit_invocation: true

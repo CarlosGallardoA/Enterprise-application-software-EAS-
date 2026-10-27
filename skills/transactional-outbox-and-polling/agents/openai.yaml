@@ -1,0 +1,6 @@
+interface:
+  display_name: "Transactional Outbox & Polling"
+  short_description: "Outbox transaccional, jobs de barrido SLA y sondeo resiliente en cliente"
+  default_prompt: "Implementa efectos secundarios durables con Outbox transaccional, workers seguros o sondeo disciplinado."
+policy:
+  allow_implicit_invocation: true

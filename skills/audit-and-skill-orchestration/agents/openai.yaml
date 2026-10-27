@@ -1,0 +1,4 @@
+interface:
+  display_name: "Orquestación de Auditorías y Ecosistema de Skills"
+  short_description: "Coordina security-audit, design-consistency-auditor, ui-ux-pro-max, impeccable, grilling y context7 con este kit."
+  default_prompt: "Usa $audit-and-skill-orchestration para coordinar las auditorías de seguridad, consistencia de diseño UI/UX y remediación siguiendo las reglas estrictas del ecosistema."

@@ -1,0 +1,95 @@
+:root {
+  /* ==========================================================================
+   * CAPA 1: PRIMITIVOS DE MARCA (exclusivos de este archivo; no usar afuera)
+   * ========================================================================== */
+  --brand-primary: #075a91;
+  --brand-secondary: #2e7fb0;
+  --brand-accent: #19a7a3;
+  --brand-ink: #46545c;
+  --brand-neutral-mid: #8d989e;
+  --brand-neutral-light: #e8eef1;
+  --brand-white: #ffffff;
+  --brand-amber: #e49b1e;
+  --brand-danger: #b3261e;
+  --brand-warning: #9a6700;
+
+  /* ==========================================================================
+   * CAPA 2: TOKENS SEMÁNTICOS (único vocabulario consumido por componentes)
+   * Contrastes auditados contra WCAG 2.1 AA (>= 4.5:1 texto, >= 3:1 bordes)
+   * ========================================================================== */
+  --color-primary: var(--brand-primary);
+  --color-primary-strong: color-mix(in srgb, var(--brand-primary), black 15%);
+  --color-secondary: var(--brand-secondary);
+  --color-accent: var(--brand-accent);
+  --color-accent-deep: color-mix(in srgb, var(--brand-accent), black 30%);
+
+  --color-ink: var(--brand-ink);
+  --color-ink-muted: color-mix(in srgb, var(--brand-neutral-mid) 35%, var(--brand-ink) 65%);
+  --color-surface: var(--brand-white);
+  --color-surface-muted: var(--brand-neutral-light);
+  --color-border: color-mix(in srgb, var(--brand-neutral-mid) 20%, var(--brand-ink) 80%);
+
+  --color-focus-indicator: var(--brand-amber);
+  --color-danger: var(--brand-danger);
+  --color-warning: var(--brand-warning);
+
+  --gradient-brand-surface: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-accent) 100%);
+
+  /* Escala tipográfica cerrada (6 pasos + display fluido) */
+  --font-display: 'Manrope', Arial, sans-serif;
+  --font-body: 'DM Sans', Arial, sans-serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-display-fluid: clamp(1.5rem, 4vw, 2.1rem);
+
+  /* Pesos formales (4 valores) */
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  /* Escala de interlineado (4 pasos) */
+  --leading-none: 1;
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-normal: 1.5;
+
+  /* Escala de espaciado cerrada (6 pasos) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2.5rem;
+
+  /* Radios consistentes */
+  --radius-xs: 0.25rem;
+  --radius-control: 0.35rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-pill: 999px;
+
+  /* Elevación: plano en reposo + 4 pasos */
+  --shadow-card: none;
+  --shadow-sm: 0 1px 3px color-mix(in srgb, var(--brand-ink) 6%, transparent),
+    0 1px 2px color-mix(in srgb, var(--brand-primary) 4%, transparent);
+  --shadow-md: 0 4px 14px color-mix(in srgb, var(--brand-primary) 8%, transparent),
+    0 2px 6px color-mix(in srgb, var(--brand-ink) 4%, transparent);
+  --shadow-lg: 0 10px 30px color-mix(in srgb, var(--brand-primary) 12%, transparent),
+    0 4px 12px color-mix(in srgb, var(--brand-ink) 6%, transparent);
+  --shadow-floating: 0 16px 40px color-mix(in srgb, var(--brand-primary) 16%, transparent),
+    0 6px 16px color-mix(in srgb, var(--brand-ink) 8%, transparent);
+  --shadow-card-hover: var(--shadow-md);
+
+  /* Anillos de foco accesibles */
+  --focus-ring: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-primary);
+  --focus-ring-danger: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-danger);
+  --focus-ring-inset: inset 0 0 0 2px var(--color-primary);
+  --focus-ring-field: 0 0 0 1px var(--color-primary);
+  --focus-ring-field-danger: 0 0 0 1px var(--color-danger);
+}

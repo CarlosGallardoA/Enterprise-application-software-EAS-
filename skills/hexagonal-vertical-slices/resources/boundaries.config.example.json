@@ -1,0 +1,25 @@
+{
+  "scanRoots": ["src"],
+  "extensions": [".ts", ".tsx", ".js", ".py", ".go", ".cs", ".java", ".kt", ".rs"],
+  "ignorePatterns": [
+    "\\.spec\\.",
+    "\\.test\\.",
+    "_test\\.go$",
+    "Tests?\\.cs$",
+    "/node_modules/",
+    "/dist/",
+    "/build/",
+    "/bin/",
+    "/obj/",
+    "/target/"
+  ],
+  "featuresSegment": "/features/",
+  "coreSegments": ["/core/", "/common/"],
+  "compositionSegments": ["/composition/"],
+  "layers": ["domain", "application", "infrastructure", "ui", "api"],
+  "allowedUiInfrastructureRegex": "(?:^|/|\\.)composition(?:/|\\.)[^/]+tokens",
+  "featureImportPrefixes": ["@features/", "@app/features/", "features/", "features."],
+  "compositionImportPrefixes": ["@app/composition/", "composition/", "composition."],
+  "forbidDeepRelativeImports": true,
+  "forbidLateImportsInJsTs": true
+}

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Layered Testing Strategy"
+  short_description: "Pruebas por capa con fakes en memoria, BD real efímera y E2E limpios"
+  default_prompt: "Diseña e implementa las pruebas unitarias, de integración y E2E apropiadas para cada capa de este cambio."
+policy:
+  allow_implicit_invocation: true

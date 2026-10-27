@@ -1,0 +1,6 @@
+interface:
+  display_name: "Enterprise App Blueprint"
+  short_description: "Estructura base, gobernanza documental y contratos transversales"
+  default_prompt: "Estructura este proyecto con gobernanza documental, contratos tipados de error y modelo base auditable."
+policy:
+  allow_implicit_invocation: true

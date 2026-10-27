@@ -1,0 +1,33 @@
+# Entorno y secretos (nunca versionar)
+.env
+.env.*
+!.env.example
+*.local
+secrets/
+*.pfx
+*.pem
+*.key
+
+# Dependencias y artefactos de compilación
+node_modules/
+dist/
+build/
+out/
+bin/
+obj/
+target/
+__pycache__/
+.venv/
+coverage/
+
+# Resultados de pruebas y evidencia visual local (no versionar imágenes de revisión)
+test-results/
+playwright-report/
+docs/auditorias/evidencias/
+
+# Editores y sistema operativo
+.idea/
+.vscode/*
+!.vscode/extensions.json
+.DS_Store
+Thumbs.db

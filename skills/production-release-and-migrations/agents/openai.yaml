@@ -1,0 +1,6 @@
+interface:
+  display_name: "Production Release & Safe Migrations"
+  short_description: "Migraciones revisadas con SHA-256, CI/CD con gates y operación segura"
+  default_prompt: "Diseña o verifica el proceso de migración segura, pipeline de CI/CD y checklist de despliegue."
+policy:
+  allow_implicit_invocation: true

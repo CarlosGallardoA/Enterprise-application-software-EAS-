@@ -1,0 +1,6 @@
+interface:
+  display_name: "Clean Code & Engineering Standards"
+  short_description: "Cero warnings, higiene de comentarios, cero código muerto y rendimiento seguro"
+  default_prompt: "Revisa y limpia el código aplicando cero advertencias, higiene estricta de comentarios y guardas de rendimiento."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Security & Auditability"
+  short_description: "Sesiones revocables, anti-IDOR, cifrado AES-256-GCM, CSP y logs sin PII"
+  default_prompt: "Aplica controles de seguridad en profundidad, autorización en servidor, cifrado documental y trazabilidad segura."
+policy:
+  allow_implicit_invocation: true

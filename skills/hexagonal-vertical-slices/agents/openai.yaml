@@ -1,0 +1,6 @@
+interface:
+  display_name: "Hexagonal Vertical Slices"
+  short_description: "Arquitectura hexagonal + vertical slicing simétrica backend/frontend"
+  default_prompt: "Diseña o revisa este módulo aplicando arquitectura hexagonal y vertical slicing sin cruzar fronteras de capas."
+policy:
+  allow_implicit_invocation: true
